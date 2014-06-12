@@ -1,0 +1,46 @@
+ok, yang pertama adalah harus list dulu apa aja model yang udah ada...
+
+Untuk sementara yang penting adalah POS dulu.. Karena itu yang akan dipakai.
+Yah walaupun belum tentu juga sih...
+
+PHPUNIT
+====================
+            
+Untuk Pos
+
+Dependencies -> customer models (stable)
+             -> products models (stable) mungkin harus ada kategori?
+                product code and id saling tumpang tindih...
+             
+Customer ID, Product Code
+
+Models
+
+
+Untuk Stock
+
+Dependencies -> products models
+
+Selenium
+====================
+Hapus data, Stress testing
+- create products 100 dari Excel
+
+loop 300x
+- create customer 
+- pos buy
+case 
+    - by customer name
+    - by product name
+    - qty 1
+    - diskon 0
+    - price 0
+    - click alert
+    
+
+    
+
+- cek recap
+- transaction history
+
+

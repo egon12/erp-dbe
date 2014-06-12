@@ -1,0 +1,26 @@
+/* CSS Document */
+input {
+}
+
+label {
+    display:inline-block;
+    width:150px;
+}
+
+input:text {
+    display:inline-block;
+    padding-left:0;
+}
+
+div.fields-box {
+    min-height:38px;
+    height:auto !important;
+    height:38px;
+    position:relative;
+    padding:20px 10px;
+    font-size:12pt;
+}
+
+.fields-box:nth-child(odd) {
+    background-color:#ccc;
+}

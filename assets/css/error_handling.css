@@ -1,0 +1,73 @@
+body {
+	font: 12px/1.7em "trebuchet ms", arial, sans-serif;
+	color: #444;
+	width: 100%;
+	height: 100%;
+	-webkit-font-smoothing: antialiased;
+}
+#error-wrapper {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 500px;
+	height: 300px;
+	text-align: center;
+	margin: -150px 0 0 -250px;
+}
+#error-wrapper h1 {
+	/*
+	font-size: 120px;
+	line-height: 1em;
+	margin-bottom: .3em;
+	*/
+	
+	color: #fff;
+	font-size: 120px;
+	text-stroke: 1px transparent;
+	display: block;
+	text-shadow: 0 1px 0 
+	#ccc, 0 2px 0 
+	#c9c9c9, 0 3px 0 
+	#bbb, 0 4px 0 
+	#b9b9b9, 0 5px 0 
+	#aaa, 0 6px 1px 
+	rgba(0,0,0,.1), 0 0 5px 
+	rgba(0,0,0,.1), 0 1px 3px 
+	rgba(0,0,0,.3), 0 3px 5px 
+	rgba(0,0,0,.2), 0 5px 10px 
+	rgba(0,0,0,.25), 0 10px 10px 
+	rgba(0,0,0,.2), 0 20px 20px 
+	rgba(0,0,0,.15);
+	line-height: 1em;
+	margin-bottom: .3em;
+}
+.error-code {
+	font-size: 32px;
+	font-weight: 600;
+	margin-bottom: .5em;
+	line-height: 1em;
+}
+.error-message {
+	font-size: 15px;
+	margin-bottom: 2em;
+	line-height: 1em;
+}
+.error-actions a{
+	background-position: 0 -85px;
+	border: 1px solid #3672a0;
+	color: #fff;
+	font-size: 11px;
+	font-weight: bold;
+	background-image: url(../img/usual_buttons.png);
+	background-repeat: repeat-x;
+	text-transform: uppercase;
+	white-space: nowrap;
+	cursor: pointer;
+	font-family: "trebuchet ms", arial, sans-serif;
+	line-height: 12px;
+	display: inline-block;
+	max-height: 29px;
+	text-decoration: none;
+	padding: 7px 18px 8px 18px;
+	height: 12px;
+}

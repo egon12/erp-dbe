@@ -1,0 +1,11 @@
+/* CSS Document */
+#table_left {
+    float:left;
+
+}
+#table_right {
+    float:right;
+}
+.clear{
+    clear:both;
+}

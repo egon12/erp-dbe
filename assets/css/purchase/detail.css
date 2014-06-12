@@ -1,0 +1,22 @@
+/* CSS Document */
+
+#printout, #printout * {
+    visibility:hidden;
+}
+
+@media print {
+    aside, #detail {
+        display:none;
+    }
+
+    #printout, #printout * {
+        visibility:visible;
+    }
+
+    #printout {
+        position:static;
+        top:0;
+        left:0;
+        width:100%
+    }
+}
