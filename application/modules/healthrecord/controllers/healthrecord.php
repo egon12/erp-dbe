@@ -65,16 +65,12 @@ class HealthRecord extends Auth_Controller
         $this->load->view('picture_view.php');
     }
 
-    public function get_view($customer_id, $table = "general")
+    public function get_data($customer_id, $table = "general")
     {
         $this->load->model('healthrecord_model');
-        if ($this->input->is_ajax_request())
-        {
-            $this->load->view('healthrecord_'.$table.'_view', array (
-                'data' => $this->healthrecord_model->get($table, $customer_id)
-
-            ));
-        }
+        $data = $this->healthrecord_model->get($table, $customer_id);
+        $this->output->set_content_type('javascript');
+        $this->output->set_output($data);
     }
 
     public function search_customer()

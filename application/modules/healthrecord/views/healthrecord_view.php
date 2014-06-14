@@ -17,7 +17,7 @@
   <!-- javascript -->
   <script type="text/javascript" src="<?php echo asset_url('js/jquery.min.js'); ?>"></script>
   <script type="text/javascript" src="<?php echo asset_url('js/plugins/bootstrap/bootstrap.min.js') ?>"></script>
-  <script type="text/javascript" src="<?php echo asset_url('js/plugins/forms/phpjquery.js'); ?>"></script>
+  <script type="text/javascript" src="<?php echo asset_url('js/plugins/charts/jquery.flot.js'); ?>"></script>
   <!-- /javascript -->
 
   <noscript></noscript>
@@ -184,13 +184,29 @@
       <div id="test" class="col-md-4 panel-group">
 
 
+        <div id="observation_panel" class="panel panel-default">
+          <div class="panel-heading">
+            <a data-toggle="collapse" data-parent="#test" href="#observation_panel_content">
+              <h4 class="panel-title">Observation and Interview</h4>
+            </a>
+          </div>
+          <div id="observation_panel_content" class="panel-collapse collapse in">
+            <div class="panel-body">
+              Notes:
+              <textarea id="patient_notes" class="form-control"></textarea>
+              <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+          </div>
+        </div>
+
+
         <div id="general_panel" class="panel panel-default">
           <div class="panel-heading">
             <a data-toggle="collapse" data-parent="#test" href="#general_panel_content">
               <h4 class="panel-title">General</h4>
             </a>
           </div>
-          <div id="general_panel_content" class="panel-collapse collapse in">
+          <div id="general_panel_content" class="panel-collapse collapse">
             <div  class="panel-body">
               <form class="form-horizontal" action="<?php echo site_url('healthrecord/add/general') ?>" method="POST" role="form">
                 <input type="hidden" class="customer_id_input" name="customer_id">
@@ -265,24 +281,10 @@
         </div>
 
 
-        <div id="observation_panel" class="panel panel-default">
-          <div class="panel-heading">
-            <a data-toggle="collapse" data-parent="#test" href="#observation_panel_content">
-              <h4 class="panel-title">Observation and Interview</h4>
-            </a>
-          </div>
-          <div id="observation_panel_content" class="panel-collapse collapse">
-            <div class="panel-body">
-              Notes:
-              <textarea id="patient_notes" class="form-control"></textarea>
-              <button type="submit" class="btn btn-primary">Save</button>
-            </div>
-          </div>
-        </div>
 
       </div> <!-- end test -->
 
-      <div id="result" class="col-md-5 panel-group">
+      <div id="result" class="col-md-5 panel-group" data-url="<?php echo site_url('healthrecord/get_data') ?>">
 
         <div class="panel panel-default">
           <div class="panel-heading">
@@ -290,7 +292,7 @@
               <h4 class="panel-title">General Result</h4>
             </a>
           </div>
-          <div id="general_result_content" class="panel-collapse collapse in" data-url="<?php echo site_url('healthrecord/get_view') ?>"></div>
+          <div id="general_result_content" class="panel-collapse collapse in"></div>
         </div>
 
         <div class="panel panel-default">
@@ -299,7 +301,7 @@
                 <h4 class="panel-title">Disease Result</h4>
               </a>
             </div>
-            <div id="disease_result_content" class="panel-collapse collapse" data-url="<?php echo site_url('healthrecord/get_view') ?>"></div>
+            <div id="disease_result_content" class="panel-collapse collapse"></div>
         </div>
       </div><!-- end result panel-group -->
 
@@ -308,15 +310,18 @@
 
   <script type="text/javascript">
 
-
     $(function(){
 
+      var url = $('result').data('url'); 
       $('.customer_select').on('change', function(e) {
         var customer_id = e.currentTarget.value;
         $('.customer_id_input').val(customer_id);
 
-        var g = $('#general_result_content');
-        g.load(g.data('url') + '/' + customer_id + '/general');
+        $.getJSON(url + '/' + customer_id + '/general' , function(data) {
+
+
+        });
+        
 
         var g = $('#disease_result_content');
         g.load(g.data('url') + '/' + customer_id + '/disease');
@@ -328,7 +333,6 @@
       });
 
       // dropzone
-      //$("form").on('change', ".dropzone input[type='file']", function(e) {
       $(".dropzone input[type='file']").on('change', function(e) {
         var file = e.target.files[0];
         var reader = new FileReader();
@@ -377,8 +381,8 @@
         } 
       });
 
-
     });
+
   </script>
 
 </html>
