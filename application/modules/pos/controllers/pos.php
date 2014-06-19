@@ -472,11 +472,16 @@ class POS extends Admin_Controller
     {
         $query=urldecode($query);
 
-        if ( preg_match("/^\d{1,4}$/", $query) ) {
+        if ( preg_match("/^\d{1,5}$/", $query) ) {
             $result = $this->product_model->search_by_category($query);
         } else {
             $result = $this->product_model->search($query);
         }
+
+	// todo think a better place for this
+	foreach ($result as $product) {
+		$product->price = number_format($product->price,0);
+	}
 
         $this->output->set_content_type('application/json')
             ->set_output(json_encode($result));
