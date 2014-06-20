@@ -16,8 +16,9 @@ $(function(){
         var applet = document.jzebra;
         applet.findPrinter();
         applet.append(data.jsprint);
-        applet.append("\n\n\n\n\n\n\n\n\n\n");
-        applet.append("\x1bm");
+        applet.append("\n\n\n\n\n\n");
+        //applet.append("\n\n\n\n\n\n\n\n\n\n");
+        //applet.append("\x1bm");
         applet.print();
       } catch (err) {
         alert ("Error\nPrinter bermasalah:\n");
