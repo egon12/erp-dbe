@@ -18,6 +18,8 @@
   <script type="text/javascript" src="<?php echo asset_url('js/jquery.min.js'); ?>"></script>
   <script type="text/javascript" src="<?php echo asset_url('js/plugins/bootstrap/bootstrap.min.js') ?>"></script>
   <script type="text/javascript" src="<?php echo asset_url('js/plugins/charts/jquery.flot.js'); ?>"></script>
+  <script type="text/javascript" src="<?php echo asset_url('js/plugins/date/moment.min.js'); ?>"></script>
+  <script type="text/javascript" src="<?php echo asset_url('js/plugins/forms/phpjquery.js'); ?>"></script>
   <!-- /javascript -->
 
   <noscript></noscript>
@@ -66,7 +68,7 @@
       font-size:14px;
     }
 
-    textarea#patient_notes {
+    textarea#sugestion_note {
       height:200px;
     }
 
@@ -106,33 +108,15 @@
 
     }
 
+    .chart {
+      height:300px;
+
+    }
+
   </style>
 
   <!-- topNav -->
-  <div id="topNav">
-    <div class="fixed">
-      <div class="wrapper">
-        <div class="welcome">
-          <h4>Health Record</h4>
-        </div>
-        <div class="userNav">
-          <ul>
-            <li>
-              <a href="#">
-                <span>Hello, <?php echo $the_user->first_name.' '.$the_user->last_name; ?>!</span>
-              </a>
-            </li>
-            <li>
-              <a href="<?php echo site_url('auth/logout'); ?>" title="">
-                <img src="<?php echo asset_url('img/icons/topnav/logout.png'); ?>" alt=""><span>Logout</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div class="clear"></div>
-      </div><!-- /wrapper -->
-    </div>
-  </div>
+  <?php $this->load->view('menu_view') ?>
   <!-- /topNav -->
 
   <div id="page" class="wrapper">
@@ -146,164 +130,55 @@
         <div class="alert alert-danger"><?php echo $alert_danger ?></div>
         <?php endif ?>
       </div>
+    </div>
 
       <!-- messages end -->
 
     
+    <div class="row">
 
       <div id="patient" class="col-md-3"> 
 
         <div class="panel panel-default">
           <div class="panel-heading"><h4 class="panel-title">Patient</h4></div>
-          <ul class="list-group">
-            <li class="list-group-item">
-                <input id="customer_search" class="customer_id_input" type="text" name="query" placeholder="Search patient" data-url="<?php echo site_url('healthrecord/search_customer') ?>" autocomplete="off"/><br />
-            </li>
-            <li class="list-group-item">
-                <select id="customer_list" class="customer_select" size="8">
-                </select>
-            </li>
-            <li class="list-group-item">
-              New Patient <br>
-              <select class="customer_select" id="new_customer_select" size="8">
-                <?php foreach ($new_customers as $customer): ?>
-                  <option value="<?php echo $customer->id?>">
-                    <?php echo $customer->name ?>
-                  </option>
-                <?php endforeach ?>
-              </select>
-            </li>
-            <li class="list-group-item">
-                <a href="<?php echo site_url('customer/add') ?>" target="_blank">Add New Patient</a>
-            </li>
-          </ul>
+            <?php $this->load->view('healthrecord_patient_view') ?>
         </div>
 
       </div> <!-- end patient -->
 
-      <div id="test" class="col-md-4 panel-group">
+      <div id="right_panel_container" class="col-md-9 panel-group">
 
-
-        <div id="observation_panel" class="panel panel-default">
-          <div class="panel-heading">
-            <a data-toggle="collapse" data-parent="#test" href="#observation_panel_content">
-              <h4 class="panel-title">Observation and Interview</h4>
-            </a>
-          </div>
-          <div id="observation_panel_content" class="panel-collapse collapse in">
-            <div class="panel-body">
-              Notes:
-              <textarea id="patient_notes" class="form-control"></textarea>
-              <button type="submit" class="btn btn-primary">Save</button>
-            </div>
-          </div>
-        </div>
 
 
         <div id="general_panel" class="panel panel-default">
           <div class="panel-heading">
-            <a data-toggle="collapse" data-parent="#test" href="#general_panel_content">
+            <a data-toggle="collapse" data-parent="#right_panel_container" href="#general_panel_content">
               <h4 class="panel-title">General</h4>
             </a>
           </div>
-          <div id="general_panel_content" class="panel-collapse collapse">
-            <div  class="panel-body">
-              <form class="form-horizontal" action="<?php echo site_url('healthrecord/add/general') ?>" method="POST" role="form">
-                <input type="hidden" class="customer_id_input" name="customer_id">
-                <div class="form-group">
-                  <label for="systolic_input" class="col-sm-5">Systolic/Diastolic:</label>
-                  <div class="col-sm-7">
-                    <input type="number" name="systolic" id="systolic_input"> / <input type="number" name="diastolic">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="blood_glucose_input" class="col-sm-5">Blood Glucose:</label>
-                  <div class="col-sm-7"><input type="number" name="blood_glucose" id="blood_glucose_input"></div>
-                </div>
-                <div class="form-group">
-                  <label for="uric_acid_input" class="col-sm-5">Uric Acid:</label>
-                  <div class="col-sm-7"><input type="number" name="uric_acid" id="uric_acid_input"></div>
-                </div>
-                <button class="btn btn-primary" type="submit">Save</button>
-              </form>
-            </div>
-          </div>
-        </div>
-
-
-        <div id="disease_panel" class="panel panel-default">
-          <div class="panel-heading">
-            <a data-toggle="collapse" data-parent="#test" href="#disease_panel_content">
-              <h4 class="panel-title">Disease</h4>
-            </a>
-          </div>
-          <div id="disease_panel_content" class="panel-collapse collapse">
+          <div id="general_panel_content" class="panel-collapse collapse in">
             <div class="panel-body">
-              Blood Picture
-              <div class="dropzone">
-                <span>Drop image or click to add file</span>
-                <input id="blood_file" type="file" name="file" multiple="false" data-picture="#blood_picture" />
-              </div>
-              <form action="<?php echo site_url('healthrecord/add/disease') ?>" method="POST" role="form">
-                <input type="hidden" class="customer_id_input" name="customer_id" />
-                <input id="blood_picture" type="hidden" name="picture" />
-                <button class="btn btn-primary" type="submit">Save</button>
-              </form>
+              <?php $this->load->view('healthrecord_general_input_view'); ?>
             </div>
           </div>
         </div>
-
-
-        <div id="beauty_panel" class="panel panel-default">
-          <div class="panel-heading">
-            <a data-toggle="collapse" data-parent="#test" href="#beauty_panel_content">
-              <h4 class="panel-title">Beauty</h4>
-            </a>
-          </div>
-
-          <div id="beauty_panel_content" class="panel-collapse collapse">
-            <div class="panel-body">
-              <form>
-                Hair Picture
-                <div class="dropzone">
-                  <span>Drop image or click to add file</span>
-                  <input id="hair_file" type="file" name="hair_file" multiple="false"/>
-                </div>
-                Skin Picture
-                <div class="dropzone">
-                  <span>Drop image or click to add file</span>
-                  <input id="skin_file" type="file" name="skin_file" multiple="false"/>
-                </div>
-                <button class="btn btn-primary" type="submit">Save</button>
-              </form>
-            </div>
-          </div>
-        </div>
-
-
-
-      </div> <!-- end test -->
-
-      <div id="result" class="col-md-5 panel-group" data-url="<?php echo site_url('healthrecord/get_data') ?>">
 
         <div class="panel panel-default">
           <div class="panel-heading">
-            <a data-toggle="collapse" data-parent="#result" href="#general_result_content">
-              <h4 class="panel-title">General Result</h4>
+            <a data-toggle="collapse" data-parent="#right_panel_container" href="#general_result_content">
+              <h4 class="panel-title">History</h4>
             </a>
           </div>
-          <div id="general_result_content" class="panel-collapse collapse in"></div>
+          <div id="general_result_content" class="panel-collapse collapse">
+            <div class="panel-body">
+              <div id="general_chart" class="chart"></div>
+            </div>
+          </div>
         </div>
 
-        <div class="panel panel-default">
-            <div class="panel-heading">
-              <a data-toggle="collapse" data-parent="#result" href="#disease_result_content">
-                <h4 class="panel-title">Disease Result</h4>
-              </a>
-            </div>
-            <div id="disease_result_content" class="panel-collapse collapse"></div>
-        </div>
-      </div><!-- end result panel-group -->
+
+      </div>
+    
 
     </div> <!-- row -->
   </div> <!-- wrapper -->
@@ -311,20 +186,66 @@
   <script type="text/javascript">
 
     $(function(){
+      function setGeneralData(data) { 
+        var systolic = [];
+        var diastolic = [];
+        var ldl = [];
+        var blood_glucose = [];
+        var uric_acid = [];
+        for (i=0; i< data.length; i++) {
+          var date = moment(data[i].timestamp).format('l');
 
-      var url = $('result').data('url'); 
+          systolic.push([i,data[i].systolic]);
+          diastolic.push([i,data[i].diastolic]);
+          ldl.push([i,data[i].ldl]);
+          blood_glucose.push([i,data[i].blood_glucose]);
+          uric_acid.push([i,data[i].uric_acid]);
+
+        }
+
+        var processedData = [
+          { label: 'Systolic', data: systolic, lines: {show: true}, points: {show: true} } ,
+          { label: 'Diastolic', data: diastolic, lines: {show: true}, points: {show: true} } ,
+          { label: 'LDL', data: ldl, lines: {show: true}, points: {show: true} } ,
+          { label: 'Blood Glucose', data: blood_glucose, lines: {show: true}, points: {show: true} } ,
+          { label: 'Uric Acid', data: uric_acid, lines: {show: true}, points: {show: true} } 
+        ];
+
+        $.plot('#general_chart', processedData);
+      }
+
+      function setDiseaseData(data) {
+        $('#disease_table tbody').html('');
+
+        for (i = 0; i<data.length; i++) {
+          var tr = $('<tr>');
+          tr.appendTo('#disease_table tbody');
+          // adding image
+          var td = $('<td>').appendTo(tr);
+          $('<img>').prop('src', data[i].picture).appendTo(td);
+          // adding timestamp
+          $('<td>').appendTo(tr).html(data[i].timestamp);
+        };
+      }
+
+
+      $('.costumer_select option').prop('selected', false);
+      $('.save-button').prop('disabled', 'disabled');
+
       $('.customer_select').on('change', function(e) {
+
         var customer_id = e.currentTarget.value;
+        var url = $('#result').data('url'); 
+
+        // get all data
+        /*
+        $.getJSON(url + '/' + customer_id + '/general' , setGeneralData);
+        $.getJSON(url + '/' + customer_id + '/disease' , setDiseaseData);
+        */
+
+        // set all input 
         $('.customer_id_input').val(customer_id);
-
-        $.getJSON(url + '/' + customer_id + '/general' , function(data) {
-
-
-        });
-        
-
-        var g = $('#disease_result_content');
-        g.load(g.data('url') + '/' + customer_id + '/disease');
+        $('.save-button').prop('disabled', '');
 
       });
 
@@ -366,10 +287,6 @@
 
           $this = $(this);
 
-          if ($this.val() == '') {
-            return;
-          }
-
           url = $this.data('url');
           query = $this.serialize();
           
@@ -380,8 +297,21 @@
           }, 300 );
         } 
       });
-
+      
+      
+      $('#diagnostic').on('change', function(e) {
+        var url = $('#diagnostic').data('url') +'/' + e.currentTarget.value;
+        $.getJSON( url, function(data) {
+            $('#sugestion_note').html(data.sugestion);
+        });
+      });
+    
     });
+
+    
+
+
+    
 
   </script>
 

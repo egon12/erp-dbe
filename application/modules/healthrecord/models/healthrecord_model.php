@@ -12,13 +12,22 @@ class HealthRecord_Model extends CI_Model {
 
         $data['user_id'] = $this->session->userdata('user_id');
 
+        foreach ($data as $key => $value) {
+            if ($value == "") {
+                unset ($data[$key]);
+            }
+        }
+
         $this->db->insert($this->table_prefix.$table, $data);
         // todo data validation
     }
 
-    public function get($table, $customer_id = null)
+    public function get($table, $customer_id = null, $date_timestamp = null)
     {
         // todo error checking
+        if ($date_timestamp) {
+            $this->db->where(array('date(timestamp)' => $date_timestamp));
+        }
         return $this->db->get_where($this->table_prefix.$table, array('customer_id' => $customer_id))->result();
     }
 

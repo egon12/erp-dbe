@@ -4,10 +4,6 @@
  *
  * @author Egon Firman <egon.firman@gmail.com>
  *
- * todo bikin customer_finder kaya di pos
- * todo bikin insert
- * todo bikin viewer
- * todo bikin flow
  **/
 
 class HealthRecord extends Auth_Controller
@@ -17,7 +13,8 @@ class HealthRecord extends Auth_Controller
      **/
     public function index()
     {
-        $this->load->model('flow/flow_model');
+        //$this->load->model('flow/flow_model');
+        $this->load->model('sugestion_model');
 
         /**
          * Ok, maybe this is some of another tools?
@@ -32,6 +29,7 @@ class HealthRecord extends Auth_Controller
         $this->load->vars(array(
             'customers' => $this->customer_model->get(),
             'new_customers' => $this->customer_model->get_new(),
+            'sugestion' => $this->sugestion_model->get_from_diagnostic(),
             'alert_success' => $this->session->flashdata('alert_success'),
             'alert_danger' => $this->session->flashdata('alert_danger'),
         ));
@@ -70,7 +68,26 @@ class HealthRecord extends Auth_Controller
         $this->load->model('healthrecord_model');
         $data = $this->healthrecord_model->get($table, $customer_id);
         $this->output->set_content_type('javascript');
-        $this->output->set_output($data);
+        $this->output->set_output(json_encode($data));
+    }
+
+    public function get_print()
+    {
+        $this->load->model('healthrecord_model');
+        $customer_id = $this->input->get('customer_id');
+        $date_timestamp = $this->input->get('date_timestamp');
+        if (!$date_timestamp) {
+            $date_timestamp = date('Y-m-d');
+        }
+
+        $tables = array('general');
+
+        $data = array();
+        foreach ($tables as $table) {
+            $data[$table] = $this->healthrecord_model->get($table, $customer_id);
+        }
+
+        $this->load->view('print_view', array('all_data' => $data));
     }
 
     public function search_customer()
@@ -79,11 +96,19 @@ class HealthRecord extends Auth_Controller
         $callback = new PHPJqueryCallback();
         $datalist = '';
 
-
         $this->load->model('customer_model');
-        $customers = $this->customer_model->search($this->input->get('query'));
+
+
+        // get list
+        $query = $this->input->get('query');
+        if ($query) {
+        $customers = $this->customer_model->search($query);
+        } else {
+            $customers = $this->customer_model->get_new();
+        }
+
         foreach ($customers as $customer) {
-            $datalist .= '<option value="'.$customer->id.'">'.$customer->name.'</option>';
+            $datalist .= '<option value="'.$customer->id.'">'.$customer->id.'  |  '.$customer->name.'</option>';
         }
 
         $callback->html('#customer_list', $datalist);
