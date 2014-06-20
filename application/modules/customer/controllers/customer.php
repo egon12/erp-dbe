@@ -172,7 +172,7 @@ class Customer extends Admin_Controller {
 			$data['csrf'] = $this->_get_csrf_nonce();
 			
 			//set the flash data error message if there is one
-			$data['message'] = (validation_errors() ? validation_errors() : $this->session->flashdata('message'));
+			$data['message'] = (validation_errors() ? '<div class="nNote nFailure">'.validation_errors().'</div>' : $this->session->flashdata('message'));
 			
 			//pass the data to the view
 			$data['customer'] = $customer;
