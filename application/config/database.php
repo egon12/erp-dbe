@@ -50,8 +50,8 @@ $active_record = TRUE;
 
 $db['default']['hostname'] = 'localhost';
 $db['default']['username'] = 'root';
-$db['default']['password'] = 'nakal23baik';
-$db['default']['database'] = 'erp_jakarta_last';
+$db['default']['password'] = '12345678';
+$db['default']['database'] = 'erp';
 $db['default']['dbdriver'] = 'mysqli';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;

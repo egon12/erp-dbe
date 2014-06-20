@@ -20,6 +20,7 @@
   <script type="text/javascript" src="<?php echo asset_url('js/plugins/template/hogan-2.0.0.min.js'); ?>"></script>
   <script type="text/javascript" src="<?php echo asset_url('js/plugins/forms/typeahead.min.js'); ?>"></script>
   <script type="text/javascript" src="<?php echo asset_url('js/plugins/forms/phpjquery.js'); ?>"></script>
+  <script type="text/javascript" src="<?php echo asset_url('js/plugins/number/numeral.min.js'); ?>"></script>
   <!-- /javascript -->
 
   <noscript></noscript>
@@ -210,7 +211,7 @@
 
       // for product input
       var findProductUrl = "<?php echo site_url('pos/find_product') ?>/%QUERY";
-      var tmpl = "<strong>{{code}}</strong>: {{name}}, {{price}}";
+      var tmpl = "<strong>{{code}}</strong>: {{name}}, <strong>Rp. {{price}}</strong>";
       productInput = $('#product_input');
       productInput.typeahead({ limit:12, valueKey: 'code', remote: findProductUrl, template:tmpl, engine: Hogan, });
       productInput.on ('typeahead:selected', function (e, datum) { $(this.form).submit(); });
