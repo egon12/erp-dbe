@@ -12,6 +12,7 @@ drop table healthrecord_disease;
 create table healthrecord_general (
   id int primary key auto_increment,
   customer_id int not null,
+  date date,
   amnanesa text,
   diagnostic varchar(256),
   systolic smallint unsigned,

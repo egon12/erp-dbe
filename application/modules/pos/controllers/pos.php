@@ -289,29 +289,29 @@ class POS extends Admin_Controller
                 $callback->send();
             }
             // check this transaction has an items
-            if (!$this->pos_session_model->check_product_exist() ) {
-                $callback->alert ("There are no items");
+            if (!$this->pos_session_model->check_product_exist()) {
+                $callback->alert("There are no items");
                 $callback->focus("#product_input");
                 $callback->send();
             }
             // check payment is bigger than total
             $payment = $this->input->post('query');
             $total = $this->pos_session_model->total();
-            if ((int) $payment < $total ) {
+            if ((int) $payment < $total) {
                 $callback->alert("Payment less than Total!");
                 $callback->focus("#payment_input");
                 $callback->send();
             }
 
             // ok set payment
-            $this->pos_session_model->set_payment ($payment);
+            $this->pos_session_model->set_payment($payment);
 
             // then get the receipt
             $receipt = $this->pos_session_model->get_receipt($this->user_id);
 
             // process the receipt
-            $receipt = $this->receipt_model->create($receipt); 
-            $this->scan ($receipt);
+            $receipt = $this->receipt_model->create($receipt);
+            $this->scan($receipt);
 
         } catch (Exception $e) {
             if ($e->getMessage() == 'session_not_valid') {
@@ -521,7 +521,7 @@ class POS extends Admin_Controller
      * receipt created
      * todo pindahin ini dari module pos
      */
-    private function scan($receipt) 
+    private function scan($receipt)
     {
         $this->load->model('membership/membership_model');
         $this->load->model('stocks/stocks_model');
@@ -536,7 +536,7 @@ class POS extends Admin_Controller
      * when receiept canceled
      * todo pindahin ini dari module pos
      */
-    private function unscan($receipt) 
+    private function unscan($receipt)
     {
         $this->load->model('membership/membership_model');
         $this->load->model('stocks/stocks_model');

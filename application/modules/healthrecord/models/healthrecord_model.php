@@ -24,6 +24,9 @@ class HealthRecord_Model extends CI_Model {
 
     public function get($table, $customer_id = null, $date_timestamp = null)
     {
+        $this->db->select($this->table_prefix.$table . '.* , users.username');
+        $this->db->join('users', 'user_id = users.id');
+        $this->db->order_by('id', 'desc');
         // todo error checking
         if ($date_timestamp) {
             $this->db->where(array('date(timestamp)' => $date_timestamp));
@@ -31,9 +34,39 @@ class HealthRecord_Model extends CI_Model {
         return $this->db->get_where($this->table_prefix.$table, array('customer_id' => $customer_id))->result();
     }
 
+    public function get_all($table, $customer_id)
+    {
+        $this->db->select($this->table_prefix.$table . '.* , users.username');
+        $this->db->join('users', 'user_id = users.id');
+        $this->db->order_by('id', 'desc');
+        return $this->db->get_where($this->table_prefix.$table, array('customer_id' => $customer_id))->result();
+    }
+
+
     public function process_image_file()
     {
         // todo make this
+    }
 
+    public function get_perdate($table, $customer_id = null, $date_timestamp = null)
+    {
+        $data = $this->get($table, $customer_id, $date_timestamp);
+        $result = array();
+        foreach ($data as $row) {
+            $date = date('M, d Y', strtotime($row->timestamp));
+            $result[$date] = $row;
+        }
+        return $result;
+    }
+
+    public function get_all_perdate($table, $customer_id = null)
+    {
+        $data = $this->get_all($table, $customer_id);
+        $result = array();
+        foreach ($data as $row) {
+            $date = date('M, d Y', strtotime($row->date));
+            $result[$row->id] = $row;
+        }
+        return $result;
     }
 }

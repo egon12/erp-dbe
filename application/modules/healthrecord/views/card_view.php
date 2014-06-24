@@ -1,28 +1,17 @@
-<!Doctype html>
-<html>
-  <meta charset="UTF-8" />
-  <style>
-
-  </style>
-  <table>
+  <table class="table">
     <thead>
       <tr>
         <th>Date</th>
         <th>Pemeriksaan</th>
         <th>Tindakan</th>
-        <th>TTD</th>
+        <th>pemeriksa</th>
       </tr>
     </thead>
     <tbody>
       <?php foreach ($all_data as $date => $data): ?>
       <tr>
-        <td><?php echo $date ?></td>
+        <td><?php echo $data->date ?></td>
         <td>
-
-            <?php /** foreach (get_object_vars($data) as $key => $value) {
-            if ($value) {echo $key . ':' . $value . '<br>'; } 
-            }*/ ?>
-
             <?php if ($data->amnanesa) {echo $data->amnanesa .'<br>';} ?>
             <?php if ($data->systolic) {echo 'Tekanan Darah: ' . $data->systolic .'/'. $data->diastolic .'<br>'; } ?>
             <?php if ($data->kolesterol) {echo 'Kolesterol : ' . $data->kolesterol .'<br>'; } ?>
@@ -42,4 +31,3 @@
       <?php endforeach?>
     </tbody>
   </table>
-</html>

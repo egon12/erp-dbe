@@ -30,7 +30,7 @@
 	        </div>
 			<div class="formRow">
 				<div class="formSubmit">
-					<?php echo anchor('products', 'Cancel', 'title="Cancel"" class="buttonM bRed mr10"'); ?>
+					<?php echo anchor('product', 'Cancel', 'title="Cancel"" class="buttonM bRed mr10"'); ?>
 					<?php echo form_submit('submit', lang('edit_submit_btn'), 'class="buttonM bBlue"');?>
 				</div>
 				<div class="clear"></div>

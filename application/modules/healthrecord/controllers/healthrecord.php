@@ -71,6 +71,13 @@ class HealthRecord extends Auth_Controller
         $this->output->set_output(json_encode($data));
     }
 
+    public function get_card($customer_id)
+    {
+        $this->load->model('healthrecord_model');
+        $data = $this->healthrecord_model->get_all_perdate('general', $customer_id);
+        $this->load->view('card_view', array('all_data' => $data));
+    }
+
     public function get_print()
     {
         $this->load->model('healthrecord_model');
@@ -82,11 +89,14 @@ class HealthRecord extends Auth_Controller
 
         $tables = array('general');
 
+        /*
         $data = array();
         foreach ($tables as $table) {
-            $data[$table] = $this->healthrecord_model->get($table, $customer_id);
+            $data[$table] = $this->healthrecord_model->get_perdate($table, $customer_id);
         }
+         */
 
+        $data = $this->healthrecord_model->get_all_perdate('general', $customer_id);
         $this->load->view('print_view', array('all_data' => $data));
     }
 

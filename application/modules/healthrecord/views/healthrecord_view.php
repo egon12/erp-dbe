@@ -11,7 +11,7 @@
   <link rel="stylesheet" type="text/css" href="<?php echo asset_url('css/font.css'); ?>">
   <link rel="stylesheet" type="text/css" href="<?php echo asset_url('css/bootstrap.css') ?>">
   <link rel="stylesheet" type="text/css" href="<?php echo asset_url('css/style.css'); ?>"> 
-  <link rel="stylesheet" type="text/css" href="<?php echo asset_url('css/plugins.css'); ?>">
+  <link rel="stylesheet" type="text/css" href="<?php echo asset_url('css/datepicker3.css'); ?>">
   <!-- /stylesheet -->
 
   <!-- javascript -->
@@ -20,6 +20,7 @@
   <script type="text/javascript" src="<?php echo asset_url('js/plugins/charts/jquery.flot.js'); ?>"></script>
   <script type="text/javascript" src="<?php echo asset_url('js/plugins/date/moment.min.js'); ?>"></script>
   <script type="text/javascript" src="<?php echo asset_url('js/plugins/forms/phpjquery.js'); ?>"></script>
+  <script type="text/javascript" src="<?php echo asset_url('js/plugins/forms/bootstrap-datepicker.js'); ?>"></script>
   <!-- /javascript -->
 
   <noscript></noscript>
@@ -54,6 +55,11 @@
     input[type=number]::-webkit-inner-spin-button {
       -webkit-appearance: none;
       margin: 0;
+    }
+
+    input.datepicker {
+      width:100px;
+
     }
 
     select {
@@ -171,7 +177,7 @@
           </div>
           <div id="general_result_content" class="panel-collapse collapse">
             <div class="panel-body">
-              <div id="general_chart" class="chart"></div>
+              <div id="general_result_table" data-url="<?php echo site_url('healthrecord/get_card') ?>"></div>
             </div>
           </div>
         </div>
@@ -228,6 +234,17 @@
         };
       }
 
+      function setCustomer(customer_id) {
+
+        $('#general_result_table').load($('#general_result_table').data('url') + '/' + customer_id);
+
+        // set all input 
+        $('.customer_id_input').val(customer_id);
+        $('.save-button').prop('disabled', '');
+        $('#customer_name').html($('#customer_list option[value="' + customer_id + '"]').html());
+
+      }
+
 
       $('.costumer_select option').prop('selected', false);
       $('.save-button').prop('disabled', 'disabled');
@@ -235,17 +252,7 @@
       $('.customer_select').on('change', function(e) {
 
         var customer_id = e.currentTarget.value;
-        var url = $('#result').data('url'); 
-
-        // get all data
-        /*
-        $.getJSON(url + '/' + customer_id + '/general' , setGeneralData);
-        $.getJSON(url + '/' + customer_id + '/disease' , setDiseaseData);
-        */
-
-        // set all input 
-        $('.customer_id_input').val(customer_id);
-        $('.save-button').prop('disabled', '');
+        setCustomer(customer_id);
 
       });
 
@@ -299,19 +306,16 @@
       });
       
       
-      $('#diagnostic').on('change', function(e) {
-        var url = $('#diagnostic').data('url') +'/' + e.currentTarget.value;
+      $('#sugestion_key').on('change', function(e) {
+        var url = $('#sugestion_key').data('url') +'/' + e.currentTarget.value;
         $.getJSON( url, function(data) {
             $('#sugestion_note').html(data.sugestion);
         });
       });
+
+      $('.datepicker_input').datepicker({format:"yyyy-mm-dd"});
     
     });
-
-    
-
-
-    
 
   </script>
 

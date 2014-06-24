@@ -1,7 +1,20 @@
 <form class="form-horizontal" action="<?php echo site_url('healthrecord/add/general') ?>" method="POST" role="form" autocomplete="off">
+  <input type="hidden" class="customer_id_input" name="customer_id">
   <div class="row">
     <div class="col-md-6">
-      <input type="hidden" class="customer_id_input" name="customer_id">
+      <label>Nama : </label><span id="customer_name"></span>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="date" class="col-sm-3">Date : </label> 
+        <div class="col-sm-7">
+          <input id="date" class="form-control datepicker_input" type="text" name="date" value="<?php echo date('Y-m-d') ?>">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
       <div class="form-group">
         <label class="col-sm-12">Amnanesa:</label>
         <div class="col-sm-12">
@@ -11,7 +24,7 @@
       <div class="form-group">
         <label class="col-sm-12">Profesional's Diagnostic:</label>
         <div class="col-sm-12">
-          <input id="diagnostic" type="text" name="diagnostic" class="form-control" data-url="<?php echo site_url('healthrecord/sugestion/get') ?>">
+          <input id="diagnostic" type="text" name="diagnostic" class="form-control">
         </div>
       </div>
       <div class="form-group">
@@ -48,10 +61,19 @@
       </div>
     </div>
     <div class="col-md-6">
-      <label for="sugestion_note">Sugestion:</label>
-      <textarea id="sugestion_note" name="sugestion" class="form-control"><?php echo $sugestion ?></textarea>
-      <br>
-      <button class="btn btn-primary save-button" type="submit">Save</button>
+      <div class="form-group">
+        <label class="col-sm-12">Sugestion Key</label>
+        <div class="col-sm-12">
+          <input id="sugestion_key" type="text" class="form-control" data-url="<?php echo site_url('healthrecord/sugestion/get') ?>">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-12" for="sugestion_note">Sugestion:</label>
+        <div class="col-sm-12">
+          <textarea id="sugestion_note" name="sugestion" class="form-control"><?php echo $sugestion ?></textarea>      
+        </div>
+      </div>
+        <button class="btn btn-primary save-button" type="submit">Save</button>
     </div>
   </div>
 </form>

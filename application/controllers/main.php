@@ -1,15 +1,21 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Main extends Admin_Controller 
+class Main extends Auth_Controller
 {
 
-    public function __construct() 
+    public function __construct()
     {
         parent::__construct();
     }
 
-    public function index() 
+    public function index()
     {
+        $this->load->model('pos/report_model');
+        $data['todays_income'] = number_format($this->report_model->receipts_total_in_day()->total/1000);
+        $data['transactions_number'] = $this->report_model->count_todays_receipts();
+        $data['customers_number'] = $this->report_model->count_todays_customers();
+        $data['new_customers_number'] = $this->report_model->count_todays_new_customers();
+
         //echo '<pre>', print_r($this->the_user, true), '</pre>';
         /*================================*/
         /* mari kita iseng */
