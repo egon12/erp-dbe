@@ -30,12 +30,12 @@
       <div class="form-group">
         <label for="systolic_input" class="col-sm-5">Systolic/Diastolic:</label>
         <div class="col-sm-7">
-          <input type="number" name="systolic" id="systolic_input"> / <input type="number" name="diastolic">
+          <input type="number" name="systolic" id="systolic_input"> / <input type="number" name="diastolic"> mmHg
         </div>
       </div>
       <div class="form-group">
         <label for="kolesterol_input" class="col-sm-5">Kolesterol:</label>
-        <div class="col-sm-7"><input type="number" name="kolesterol" id="kolesterol_input"></div>
+        <div class="col-sm-7"><input type="number" name="kolesterol" id="kolesterol_input"> mg/dl </div>
       </div>
 
       <div class="form-group">
@@ -43,21 +43,21 @@
       </div>
       <div class="form-group">
         <label for="guladarah_puasa" class="col-sm-4 col-sm-offset-1">Puasa:</label>
-        <div class="col-sm-7"><input type="number" name="guladarah_puasa" id="guladarah_puasa"></div>
+        <div class="col-sm-7"><input type="number" name="guladarah_puasa" id="guladarah_puasa"> mg/dl </div>
       </div>
       <div class="form-group">
-        <label for="guladarah_sewaktu" class="col-sm-4 col-sm-offset-1">Sewaktu Makan:</label>
-        <div class="col-sm-7"><input type="number" name="guladarah_sewaktu" id="guladarah_sewaktu"></div>
+        <label for="guladarah_sewaktu" class="col-sm-4 col-sm-offset-1">Sewaktu :</label>
+        <div class="col-sm-7"><input type="number" name="guladarah_sewaktu" id="guladarah_sewaktu"> mg/dl </div>
       </div>
       <div class="form-group">
-        <label for="guladarah_sesudah" class="col-sm-4 col-sm-offset-1">Sesudah Makan:</label>
-        <div class="col-sm-7"><input type="number" name="guladarah_sesudah" id="guladarah_sesudah"></div>
+        <label for="guladarah_sesudah" class="col-sm-4 col-sm-offset-1">2 jam pp:</label>
+        <div class="col-sm-7"><input type="number" name="guladarah_sesudah" id="guladarah_sesudah"> mg/dl </div>
       </div>
 
 
       <div class="form-group">
         <label for="asam_urat_input" class="col-sm-5">Asam Urat:</label>
-        <div class="col-sm-7"><input type="number" name="asam_urat" id="asam_urat_input" step="0.10"></div>
+        <div class="col-sm-7"><input type="number" name="asam_urat" id="asam_urat_input" step="0.10"> mg/dl </div>
       </div>
     </div>
     <div class="col-md-6">

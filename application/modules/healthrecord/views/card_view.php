@@ -25,7 +25,7 @@
           <?php if ($data->sugestion) {echo nl2br($data->sugestion); } ?>
         </td>
         <td>          
-          <?php echo $data->username; ?>
+          <?php echo $data->first_name; ?>
         </td>
       </tr>
       <?php endforeach?>

@@ -24,7 +24,7 @@ class HealthRecord_Model extends CI_Model {
 
     public function get($table, $customer_id = null, $date_timestamp = null)
     {
-        $this->db->select($this->table_prefix.$table . '.* , users.username');
+        $this->db->select($this->table_prefix.$table . '.* , users.first_name');
         $this->db->join('users', 'user_id = users.id');
         $this->db->order_by('id', 'desc');
         // todo error checking
@@ -36,7 +36,7 @@ class HealthRecord_Model extends CI_Model {
 
     public function get_all($table, $customer_id)
     {
-        $this->db->select($this->table_prefix.$table . '.* , users.username');
+        $this->db->select($this->table_prefix.$table . '.* , users.first_name');
         $this->db->join('users', 'user_id = users.id');
         $this->db->order_by('id', 'desc');
         return $this->db->get_where($this->table_prefix.$table, array('customer_id' => $customer_id))->result();
