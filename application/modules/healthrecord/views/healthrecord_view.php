@@ -37,15 +37,15 @@
       font-size:14px;
     }
 
-    input[type="number"]
+    input[type="number"], input[type="number"].form-control
     {
       background:none repeat scroll 0% 0% rgb(255,255,255);
-      border:solid 1px #aaa;
+      border:solid 1px #ccc;
       border-radius:3px;
       text-align: right;
       cursor: text;
       outline:medium none;
-      padding: 3px 3px;
+      padding: 3px 5px;
       font-size:18px;
       width:50px;
       -moz-appearance:textfield;
@@ -55,6 +55,17 @@
     input[type=number]::-webkit-inner-spin-button {
       -webkit-appearance: none;
       margin: 0;
+    }
+
+    span.satuan {
+      display:inline-block;
+      border: 1px solid #ccc;
+      padding:5px 3px 1px;
+      margin-left:-6px;
+      background-color:#e8e8e8;
+      border-radius:0 3px 3px 0;
+      font-size:11px;
+
     }
 
     input.datepicker {
@@ -153,41 +164,31 @@
       </div> <!-- end patient -->
 
       <div id="right_panel_container" class="col-md-9 panel-group">
-
-
-
-        <div id="general_panel" class="panel panel-default">
-          <div class="panel-heading">
-            <a data-toggle="collapse" data-parent="#right_panel_container" href="#general_panel_content">
-              <h4 class="panel-title">General</h4>
-            </a>
-          </div>
-          <div id="general_panel_content" class="panel-collapse collapse in">
-            <div class="panel-body">
-              <?php $this->load->view('healthrecord_general_input_view'); ?>
-            </div>
-          </div>
-        </div>
-
         <div class="panel panel-default">
-          <div class="panel-heading">
-            <a data-toggle="collapse" data-parent="#right_panel_container" href="#general_result_content">
-              <h4 class="panel-title">History</h4>
-            </a>
-          </div>
-          <div id="general_result_content" class="panel-collapse collapse">
-            <div class="panel-body">
-              <div id="general_result_table" data-url="<?php echo site_url('healthrecord/get_card') ?>"></div>
+
+          <div class="panel-body">
+            <ul id="tab_right" class="nav nav-tabs" role="tablist">
+              <li class="active"><a href="#general_tab" data-toggle="tab">General</a></li>
+              <li><a href="#card_tab" data-toggle="tab">History</a></li>
+            </ul>
+
+            <div id="tabContent" class="tab-content">
+              <div id="general_tab" class="tab-pane active">
+                <?php $this->load->view('healthrecord_general_input_view'); ?>
+              </div>
+
+              <div id="card_tab" class="tab-pane">
+                <div id="general_result_table" data-url="<?php echo site_url('healthrecord/get_card') ?>"></div>
+              </div>
             </div>
           </div>
         </div>
-
-
       </div>
-    
+
 
     </div> <!-- row -->
   </div> <!-- wrapper -->
+  <div id="modal" class="modal fade"></div>
 
   <script type="text/javascript">
 
@@ -296,7 +297,7 @@
 
           url = $this.data('url');
           query = $this.serialize();
-          
+
           r = setTimeout( function () {
             $.getJSON ( url, query, function ( data ) {
               $.processPHPJQueryCallback (data);
@@ -304,17 +305,24 @@
           }, 300 );
         } 
       });
-      
-      
+
+
       $('#sugestion_key').on('change', function(e) {
         var url = $('#sugestion_key').data('url') +'/' + e.currentTarget.value;
         $.getJSON( url, function(data) {
-            $('#sugestion_note').html(data.sugestion);
+          $('#sugestion_note').html(data.sugestion);
         });
       });
 
       $('.datepicker_input').datepicker({format:"yyyy-mm-dd"});
-    
+
+      $('#tab_right a').click(function(e) {
+        e.preventDefault();
+        $(this).tab('show');
+      });
+
+
+
     });
 
   </script>

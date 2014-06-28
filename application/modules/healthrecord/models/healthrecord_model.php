@@ -1,6 +1,17 @@
 <?php
-
-class HealthRecord_Model extends CI_Model {
+/**
+ * HealthRecord is interface to healthrecord database.
+ * Still think the best for the unstructured document
+ * maybe the best is save it in json.
+ * But still it's not will be available for searching and etc.
+ * And it will hard in processing the data..
+ *
+ * 
+ *
+ *
+ */
+class HealthRecord_Model extends CI_Model
+{
 
     protected $table_prefix = 'healthrecord_';
 
@@ -18,28 +29,43 @@ class HealthRecord_Model extends CI_Model {
             }
         }
 
-        $this->db->insert($this->table_prefix.$table, $data);
-        // todo data validation
-    }
+        $row_affected = $this->db->insert($this->table_prefix.$table, $data);
 
-    public function get($table, $customer_id = null, $date_timestamp = null)
-    {
-        $this->db->select($this->table_prefix.$table . '.* , users.first_name');
-        $this->db->join('users', 'user_id = users.id');
-        $this->db->order_by('id', 'desc');
-        // todo error checking
-        if ($date_timestamp) {
-            $this->db->where(array('date(timestamp)' => $date_timestamp));
+        // validateion
+        if ($row_affected != 1) {
+            throw new Exception ("Data not inserted");
         }
-        return $this->db->get_where($this->table_prefix.$table, array('customer_id' => $customer_id))->result();
     }
 
-    public function get_all($table, $customer_id)
+    public function get($table)
     {
         $this->db->select($this->table_prefix.$table . '.* , users.first_name');
         $this->db->join('users', 'user_id = users.id');
-        $this->db->order_by('id', 'desc');
-        return $this->db->get_where($this->table_prefix.$table, array('customer_id' => $customer_id))->result();
+        $this->db->order_by('date', 'desc');
+
+        // only get that not have been deleted
+        $this->db->where('deleted', 0);
+
+        $result = $this->db->get($this->table_prefix.$table)->result();
+
+        // validation
+        if (sizeof($result) == 0) {
+            throw new Exception("Data is not exists");
+        }
+
+        return $result;
+    }
+
+    public function getByCustomer($table, $customer_id = null)
+    {
+        $this->db->where('customer_id', $customer_id);
+        return $this->get($table);
+    }
+
+    public function getById($table, $id)
+    {
+        $this->db->where($this->table_prefix.$table.'.id', $id);
+        return $this->get($table)[0];
     }
 
 
@@ -48,25 +74,25 @@ class HealthRecord_Model extends CI_Model {
         // todo make this
     }
 
-    public function get_perdate($table, $customer_id = null, $date_timestamp = null)
+    /**
+     * use id as reference to update table
+     *
+     */
+    public function update($table, $data)
     {
-        $data = $this->get($table, $customer_id, $date_timestamp);
-        $result = array();
-        foreach ($data as $row) {
-            $date = date('M, d Y', strtotime($row->timestamp));
-            $result[$date] = $row;
-        }
-        return $result;
+        //$this->db->where(array('date' => $data['date'], 'customer_id' => $data['customer_id']));
+        $this->db->where(array('id' => $data['id']));
+        return $this->db->update($this->table_prefix.$table, $data);
     }
 
-    public function get_all_perdate($table, $customer_id = null)
+    public function delete($table, $id)
     {
-        $data = $this->get_all($table, $customer_id);
-        $result = array();
-        foreach ($data as $row) {
-            $date = date('M, d Y', strtotime($row->date));
-            $result[$row->id] = $row;
+        $row_affected = $this->db->where('id', $id)
+            ->set('deleted', 1)
+            ->update($this->table_prefix.$table);
+        
+        if ($row_affected != 1) {
+            throw new Exception ("Error when delete some data");
         }
-        return $result;
     }
 }

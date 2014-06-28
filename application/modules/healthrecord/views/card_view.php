@@ -4,7 +4,8 @@
         <th>Date</th>
         <th>Pemeriksaan</th>
         <th>Tindakan</th>
-        <th>pemeriksa</th>
+        <th>Pemeriksa</th>
+        <th>Aksi</th>
       </tr>
     </thead>
     <tbody>
@@ -26,6 +27,10 @@
         </td>
         <td>          
           <?php echo $data->first_name; ?>
+        </td>
+        <td>
+          <a href="<?php echo site_url('healthrecord/get_update_form/general/'.$data->id) ?>" class="btn btn-primary" data-toggle="modal" data-target="#modal">Edit</a>
+          <a href="<?php echo site_url('healthrecord/delete/general/'.$data->id) ?>" class="btn btn-danger">Delete</a>
         </td>
       </tr>
       <?php endforeach?>

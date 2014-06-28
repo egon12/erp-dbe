@@ -8,6 +8,7 @@
 
 class HealthRecord extends Auth_Controller
 {
+
     /**
      * index, show the input
      **/
@@ -15,19 +16,9 @@ class HealthRecord extends Auth_Controller
     {
         //$this->load->model('flow/flow_model');
         $this->load->model('sugestion_model');
-
-        /**
-         * Ok, maybe this is some of another tools?
-         *
-         */
-        //$this->flow_model->get_list(1);
-
-        //$this->customer_model->get_list_today();
-
         $this->load->model('customer_model');
 
         $this->load->vars(array(
-            'customers' => $this->customer_model->get(),
             'new_customers' => $this->customer_model->get_new(),
             'sugestion' => $this->sugestion_model->get_from_diagnostic(),
             'alert_success' => $this->session->flashdata('alert_success'),
@@ -42,12 +33,12 @@ class HealthRecord extends Auth_Controller
         $this->load->model('healthrecord_model');
         $this->load->model('customer_model');
         $post = $this->input->post();
+        $customer_name = $this->customer_model->get_name($post['customer_id']);
         try {
             $this->healthrecord_model->insert($type, $post);
-            $customer_name = $this->customer_model->get_name($post['customer_id']);
             $this->session->set_flashdata('alert_success', 'Record for '.$customer_name.' is saved');
         } catch (Exception $e) {
-            $this->session->set_flashdata('alert_danger', $e->getMessage());
+            $this->session->set_flashdata('alert_danger', "Error when inserted $customer_name. " . $e->getMessage());
         }
         redirect('healthrecord');
     }
@@ -74,7 +65,11 @@ class HealthRecord extends Auth_Controller
     public function get_card($customer_id)
     {
         $this->load->model('healthrecord_model');
-        $data = $this->healthrecord_model->get_all_perdate('general', $customer_id);
+        try {
+            $data = $this->healthrecord_model->getByCustomer('general', $customer_id);
+        } catch (Exception $e) {
+            $data = array();
+        }
         $this->load->view('card_view', array('all_data' => $data));
     }
 
@@ -123,5 +118,64 @@ class HealthRecord extends Auth_Controller
 
         $callback->html('#customer_list', $datalist);
         $callback->send();
+    }
+
+    public function get_update_form($type, $id)
+    {
+        $this->load->model('healthrecord_model');
+        $this->load->model('customer_model');
+        try {
+            // get data first and then delete it
+            $healthrecord = $this->healthrecord_model->getById($type, $id);
+
+        } catch (Exception $e) {
+            // pass
+        }
+
+        $data = array (
+            'customer_name' => $this->customer_model->get_name($healthrecord->customer_id),
+            'row' => $healthrecord,
+        );
+
+        $this->load->view('healthrecord_general_edit_view', $data);
+    }
+
+    public function update($type, $id)
+    {
+        // error check
+        $post = $this->input->post();
+        if ($id != $post['id']) {
+            $this->session->set_flashdata('alert_danger', 'Failed to update please retry');
+            redirect('healthrecord');
+        }
+
+        $this->load->model(array('healthrecord_model', 'customer_model'));
+
+        $this->healthrecord_model->update($type, $post);
+        $customer_name = $this->customer_model->get_name($post['customer_id']);
+        $this->session->set_flashdata('alert_success', "Update for $customer_name Success");
+        redirect('healthrecord');
+    }
+
+    public function delete($type, $id)
+    {
+        $this->load->model('healthrecord_model');
+        $this->load->model('customer_model');
+        try {
+            // get data first and then delete it
+            $healthrecord = $this->healthrecord_model->getById($type, $id);
+
+            $this->healthrecord_model->delete($type, $id);
+
+            $customer_name = $this->customer_model->get_name($healthrecord->customer_id);
+            $date = $healthrecord->date;
+
+            $msg = "Record $customer_name at $date is deleted!";
+
+            $this->session->set_flashdata('alert_success', $msg);
+        } catch (Exception $e) {
+            $this->session->set_flashdata('alert_danger', "Error when Delete data: " . $e->getMessage());
+        }
+        redirect('healthrecord');
     }
 }
